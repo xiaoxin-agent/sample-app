@@ -9,12 +9,17 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'python3 -m pip install --user -r requirements.txt'
+                // 用 venv 隔离依赖：Debian 系系统 Python 受 PEP 668 保护，
+                // pip 不允许直接装包（--user 也一样），必须走虚拟环境
+                sh '''
+                    python3 -m venv .venv
+                    .venv/bin/pip install -r requirements.txt
+                '''
             }
         }
         stage('Test') {
             steps {
-                sh 'mkdir -p reports && python3 -m pytest --junitxml=reports/junit.xml'
+                sh 'mkdir -p reports && .venv/bin/pytest --junitxml=reports/junit.xml'
             }
             post {
                 always {
