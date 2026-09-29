@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // 改成你自己的 Docker Hub 用户名
-        IMAGE = 'YOUR_DOCKERHUB_USER/windriver-demo'
+        IMAGE = 'xiaoxinagent/windriver-demo'
     }
 
     stages {
