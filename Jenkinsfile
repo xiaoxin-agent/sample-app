@@ -5,7 +5,7 @@ pipeline {
         // 改成你自己的 Docker Hub 用户名
         IMAGE = 'xiaoxinagent/windriver-demo'
         // 改成你的 Harbor 地址（hostname 或 IP，不要带 http://）
-        HARBOR_HOST = 'harbor.local'
+        HARBOR_HOST = 'harbor.local:8088'
     }
 
     stages {
