@@ -1,0 +1,12 @@
+replicaCount: 2
+
+image:
+  repository: xiaoxinagent/windriver-demo
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  port: 8000
+
+# 要和 kube-prometheus-stack 安装时的 release 名一致（默认就是 prometheus）
+serviceMonitorRelease: prometheus

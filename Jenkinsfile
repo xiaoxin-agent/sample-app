@@ -4,6 +4,8 @@ pipeline {
     environment {
         // 改成你自己的 Docker Hub 用户名
         IMAGE = 'xiaoxinagent/windriver-demo'
+        // 改成你的 Harbor 地址（hostname 或 IP，不要带 http://）
+        HARBOR_HOST = 'harbor.local'
     }
 
     stages {
@@ -38,6 +40,18 @@ pipeline {
                         usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
                     sh 'docker push $IMAGE:$BUILD_NUMBER'
+                }
+            }
+        }
+        stage('Push to Harbor') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'harbor',
+                        usernameVariable: 'HARBOR_USER', passwordVariable: 'HARBOR_PASS')]) {
+                    sh '''
+                        echo "$HARBOR_PASS" | docker login "$HARBOR_HOST" -u "$HARBOR_USER" --password-stdin
+                        docker tag "$IMAGE:$BUILD_NUMBER" "$HARBOR_HOST/library/windriver-demo:$BUILD_NUMBER"
+                        docker push "$HARBOR_HOST/library/windriver-demo:$BUILD_NUMBER"
+                    '''
                 }
             }
         }

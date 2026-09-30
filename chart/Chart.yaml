@@ -1,0 +1,6 @@
+apiVersion: v2
+name: sample-app
+description: Wind River 学习计划第 2 周示例应用的 Helm chart
+type: application
+version: 0.1.0
+appVersion: "1.0"

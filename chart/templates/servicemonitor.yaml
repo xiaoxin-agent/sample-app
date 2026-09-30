@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ .Release.Name }}-sample-app
+  labels:
+    # prometheus-operator 只抓取带这个 label 的 ServiceMonitor，
+    # 值要等于 kube-prometheus-stack 的 release 名
+    release: {{ .Values.serviceMonitorRelease }}
+spec:
+  selector:
+    matchLabels:
+      app: sample-app
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
